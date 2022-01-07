@@ -4,6 +4,7 @@ import { RouterView } from "vue-router";
 import CurrencyDisplay from "../../components/currency-display.vue";
 import DateDisplay from "../../components/date-display.vue";
 import { DELETE_SUBSCRIPTION, LOAD_SUBSCRIPTIONS } from "../../store/mutation-types";
+import { Subscription } from "../../types";
 
 export default defineComponent({
   components: {
@@ -15,7 +16,7 @@ export default defineComponent({
     this.$store.dispatch({ type: LOAD_SUBSCRIPTIONS })
   },
   computed: {
-    subscriptions() {
+    subscriptions(): Subscription[] {
       return this.$store.state.subscriptions.data;
     }
   },
