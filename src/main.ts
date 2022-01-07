@@ -5,6 +5,7 @@ import "./index.css";
 import { key, store } from "./store";
 import SubscriptionView from "./views/subscriptions/index.vue";
 import EditItemView from "./views/subscriptions/edit-item.vue";
+import LoginView from "./views/login.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,6 +28,11 @@ const router = createRouter({
           },
         },
       ],
+    },
+    {
+      name: "login",
+      path: "/login",
+      component: LoginView,
     },
   ],
 });
