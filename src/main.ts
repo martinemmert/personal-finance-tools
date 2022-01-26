@@ -6,6 +6,7 @@ import { key, store } from "./store";
 import SubscriptionView from "./views/subscriptions/index.vue";
 import EditItemView from "./views/subscriptions/edit-item.vue";
 import LoginView from "./views/login.vue";
+import SignUpView from "./views/sign-up.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -33,6 +34,11 @@ const router = createRouter({
       name: "login",
       path: "/login",
       component: LoginView,
+    },
+    {
+      name: "sign-up",
+      path: "/sign-up",
+      component: SignUpView,
     },
   ],
 });

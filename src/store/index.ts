@@ -8,6 +8,7 @@ import {
 } from "../api/subscriptions";
 import { definitions } from "../supabase";
 import { SubscriptionFormData } from "../types";
+import { AuthStore } from "./auth";
 import {
   CREATE_SUBSCRIPTION,
   DELETE_SUBSCRIPTION,
@@ -47,6 +48,9 @@ function setIsLoadingFalse(context: ActionContext<State, State>) {
 }
 
 export const store = createStore<State>({
+  modules: {
+    auth: AuthStore,
+  },
   state() {
     return {
       subscriptions: {
