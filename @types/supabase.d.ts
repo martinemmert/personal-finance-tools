@@ -19,12 +19,10 @@ export interface paths {
           id?: parameters["rowFilter.service_subscriptions.id"];
           created_at?: parameters["rowFilter.service_subscriptions.created_at"];
           updated_at?: parameters["rowFilter.service_subscriptions.updated_at"];
-          name?: parameters["rowFilter.service_subscriptions.name"];
-          description?: parameters["rowFilter.service_subscriptions.description"];
-          fee_recurrence?: parameters["rowFilter.service_subscriptions.fee_recurrence"];
-          fee?: parameters["rowFilter.service_subscriptions.fee"];
-          category?: parameters["rowFilter.service_subscriptions.category"];
-          user_id?: parameters["rowFilter.service_subscriptions.user_id"];
+          service_name?: parameters["rowFilter.service_subscriptions.service_name"];
+          billing_period?: parameters["rowFilter.service_subscriptions.billing_period"];
+          price?: parameters["rowFilter.service_subscriptions.price"];
+          subscription_plan?: parameters["rowFilter.service_subscriptions.subscription_plan"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -78,12 +76,10 @@ export interface paths {
           id?: parameters["rowFilter.service_subscriptions.id"];
           created_at?: parameters["rowFilter.service_subscriptions.created_at"];
           updated_at?: parameters["rowFilter.service_subscriptions.updated_at"];
-          name?: parameters["rowFilter.service_subscriptions.name"];
-          description?: parameters["rowFilter.service_subscriptions.description"];
-          fee_recurrence?: parameters["rowFilter.service_subscriptions.fee_recurrence"];
-          fee?: parameters["rowFilter.service_subscriptions.fee"];
-          category?: parameters["rowFilter.service_subscriptions.category"];
-          user_id?: parameters["rowFilter.service_subscriptions.user_id"];
+          service_name?: parameters["rowFilter.service_subscriptions.service_name"];
+          billing_period?: parameters["rowFilter.service_subscriptions.billing_period"];
+          price?: parameters["rowFilter.service_subscriptions.price"];
+          subscription_plan?: parameters["rowFilter.service_subscriptions.subscription_plan"];
         };
         header: {
           /** Preference */
@@ -101,12 +97,10 @@ export interface paths {
           id?: parameters["rowFilter.service_subscriptions.id"];
           created_at?: parameters["rowFilter.service_subscriptions.created_at"];
           updated_at?: parameters["rowFilter.service_subscriptions.updated_at"];
-          name?: parameters["rowFilter.service_subscriptions.name"];
-          description?: parameters["rowFilter.service_subscriptions.description"];
-          fee_recurrence?: parameters["rowFilter.service_subscriptions.fee_recurrence"];
-          fee?: parameters["rowFilter.service_subscriptions.fee"];
-          category?: parameters["rowFilter.service_subscriptions.category"];
-          user_id?: parameters["rowFilter.service_subscriptions.user_id"];
+          service_name?: parameters["rowFilter.service_subscriptions.service_name"];
+          billing_period?: parameters["rowFilter.service_subscriptions.billing_period"];
+          price?: parameters["rowFilter.service_subscriptions.price"];
+          subscription_plan?: parameters["rowFilter.service_subscriptions.subscription_plan"];
         };
         body: {
           /** service_subscriptions */
@@ -238,24 +232,13 @@ export interface definitions {
      */
     updated_at?: string;
     /** Format: character varying */
-    name: string;
-    /** Format: text */
-    description?: string;
+    service_name: string;
     /** Format: character varying */
-    fee_recurrence: string;
+    billing_period: string;
     /** Format: double precision */
-    fee: number;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `service_subscriptions_categories.id`.<fk table='service_subscriptions_categories' column='id'/>
-     */
-    category?: string;
-    /**
-     * Format: uuid
-     * @default auth.uid()
-     */
-    user_id: string;
+    price: number;
+    /** Format: character varying */
+    subscription_plan?: string | null;
   };
   service_subscriptions_categories: {
     /**
@@ -316,17 +299,13 @@ export interface parameters {
   /** Format: timestamp with time zone */
   "rowFilter.service_subscriptions.updated_at": string;
   /** Format: character varying */
-  "rowFilter.service_subscriptions.name": string;
-  /** Format: text */
-  "rowFilter.service_subscriptions.description": string;
+  "rowFilter.service_subscriptions.service_name": string;
   /** Format: character varying */
-  "rowFilter.service_subscriptions.fee_recurrence": string;
+  "rowFilter.service_subscriptions.billing_period": string;
   /** Format: double precision */
-  "rowFilter.service_subscriptions.fee": string;
-  /** Format: uuid */
-  "rowFilter.service_subscriptions.category": string;
-  /** Format: uuid */
-  "rowFilter.service_subscriptions.user_id": string;
+  "rowFilter.service_subscriptions.price": string;
+  /** Format: character varying */
+  "rowFilter.service_subscriptions.subscription_plan": string;
   /** @description service_subscriptions_categories */
   "body.service_subscriptions_categories": definitions["service_subscriptions_categories"];
   /** Format: uuid */

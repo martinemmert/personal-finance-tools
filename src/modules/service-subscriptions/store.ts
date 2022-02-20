@@ -1,12 +1,26 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { definitions } from "_@types/supabase";
+import { number, object, SchemaOf, string } from "yup";
 
 export type ServiceSubscription = definitions["service_subscriptions"];
+
 export type ServiceSubscriptionFormData = Pick<
   ServiceSubscription,
-  "name" | "fee" | "fee_recurrence"
->;
+  "service_name" | "subscription_plan" | "billing_period" | "price"
+> & {
+  id?: string;
+};
+
+export const ServiceSubscriptionSchema: SchemaOf<ServiceSubscriptionFormData> = object({
+  id: string(),
+  service_name: string().required(),
+  subscription_plan: string().nullable(),
+  billing_period: string()
+    .required()
+    .matches(/weekly|monthly/),
+  price: number().required().min(0),
+});
 
 function fromServiceSubscriptions(client: SupabaseClient) {
   return client.from<ServiceSubscription>("service_subscriptions");

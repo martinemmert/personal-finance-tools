@@ -1,7 +1,7 @@
 <style lang="postcss"></style>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useLink, useRoute, useRouter } from "vue-router";
 import Button from "_components/atoms/button.vue";
 import PageHeader from "_components/atoms/page-header.vue";
@@ -9,29 +9,15 @@ import Dialog from "_components/overlays/dialog.vue";
 import EditForm from "./edit-form.vue";
 import TableView from "./table-view.vue";
 import Modal from "_components/overlays/modal.vue";
-import { SubmitHandler } from "_modules/service-subscriptions/use-edit-form";
+import { useServiceSubscriptions } from "_modules/service-subscriptions/store";
+import { storeToRefs } from "pinia";
 
-type ServiceSubscription = {
-  id: string;
-  service_name: string;
-  subscription_plan?: string;
-  billing_period: "weekly" | "monthly";
-  price: number;
-};
+const store = useServiceSubscriptions();
+const { items } = storeToRefs(store);
 
-type Emits = {
-  (e: "edit", id: string): void;
-  (e: "delete", id: string): void;
-};
-
-type Props = {
-  // data: ServiceSubscription[];
-};
-
-const data: ServiceSubscription[] = [];
-
-defineProps<Props>();
-const emit = defineEmits<Emits>();
+onMounted(() => {
+  store.fetch();
+});
 
 const router = useRouter();
 const currentRoute = useRoute();
@@ -39,6 +25,7 @@ const baseLink = useLink({ to: "/" });
 const createLink = useLink({ to: "/create" });
 
 const deleteModalOpen = ref(false);
+
 const dialogOpen = computed(() => {
   return (
     currentRoute.name === "edit-subscription-service" ||
@@ -53,10 +40,6 @@ function onEdit(id: string) {
 function onDelete(id: string) {
   deleteModalOpen.value = true;
 }
-
-const submitHandler: SubmitHandler = async (values, actions) => {
-  console.log("submit", values);
-};
 </script>
 
 <template>
@@ -65,8 +48,8 @@ const submitHandler: SubmitHandler = async (values, actions) => {
       <Button variant="cta" @click="createLink.navigate">Add subscription</Button>
     </PageHeader>
     <div class="overflow-hidden rounded-lg bg-white shadow">
-      <TableView v-if="data && data.length > 0" :data="data" @edit="onEdit" @delete="onDelete" />
-      <div v-if="!data || data.length === 0" class="mx-auto my-8 max-w-xl">
+      <TableView v-if="items && items.length > 0" :data="items" @edit="onEdit" @delete="onDelete" />
+      <div v-if="!items || items.length === 0" class="mx-auto my-8 max-w-xl">
         <button
           type="button"
           class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -105,10 +88,6 @@ const submitHandler: SubmitHandler = async (values, actions) => {
     @cancel="deleteModalOpen = false"
   />
   <Dialog :open="dialogOpen" @close="baseLink.navigate">
-    <EditForm
-      :submitHandler="submitHandler"
-      @submitted="baseLink.navigate"
-      @cancel="baseLink.navigate"
-    />
+    <EditForm @submitted="baseLink.navigate" @cancel="baseLink.navigate" />
   </Dialog>
 </template>

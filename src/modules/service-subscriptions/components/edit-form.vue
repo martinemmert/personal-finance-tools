@@ -9,11 +9,7 @@ import HorizontalFieldset from "_components/layout/horizontal-fieldset.vue";
 import SelectField from "_components/vee-validate/select-field.vue";
 import TextInputErrorMessage from "_components/vee-validate/text-input-error-message.vue";
 import TextInputField from "_components/vee-validate/text-input-field.vue";
-import { SubmitHandler, useEditForm } from "_modules/service-subscriptions/use-edit-form";
-
-type Props = {
-  submitHandler: SubmitHandler;
-};
+import { SubmitHandler, useEditForm } from "_modules/service-subscriptions/hooks/use-edit-form";
 
 type Emits = {
   (e: "submit"): void;
@@ -23,9 +19,7 @@ type Emits = {
 };
 
 const emit = defineEmits<Emits>();
-const props = defineProps<Props>();
-
-const { handleSubmit, handleReset } = useEditForm(props.submitHandler, emit);
+const { handleSubmit, handleReset } = useEditForm(emit);
 const isSubmitting = useIsSubmitting();
 </script>
 
