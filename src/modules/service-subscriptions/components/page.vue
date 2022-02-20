@@ -2,13 +2,14 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useLink, useRoute, useRouter, RouterView } from "vue-router";
+import { useLink, useRoute, useRouter } from "vue-router";
 import Button from "_components/atoms/button.vue";
 import PageHeader from "_components/atoms/page-header.vue";
 import Dialog from "_components/overlays/dialog.vue";
 import EditForm from "./edit-form.vue";
 import TableView from "./table-view.vue";
 import Modal from "_components/overlays/modal.vue";
+import { SubmitHandler } from "_modules/service-subscriptions/use-edit-form";
 
 type ServiceSubscription = {
   id: string;
@@ -30,6 +31,7 @@ type Props = {
 const data: ServiceSubscription[] = [];
 
 defineProps<Props>();
+const emit = defineEmits<Emits>();
 
 const router = useRouter();
 const currentRoute = useRoute();
@@ -51,6 +53,10 @@ function onEdit(id: string) {
 function onDelete(id: string) {
   deleteModalOpen.value = true;
 }
+
+const submitHandler: SubmitHandler = async (values, actions) => {
+  console.log("submit", values);
+};
 </script>
 
 <template>
@@ -60,7 +66,7 @@ function onDelete(id: string) {
     </PageHeader>
     <div class="overflow-hidden rounded-lg bg-white shadow">
       <TableView v-if="data && data.length > 0" :data="data" @edit="onEdit" @delete="onDelete" />
-      <div v-if="!data || data.length == 0" class="mx-auto my-8 max-w-xl">
+      <div v-if="!data || data.length === 0" class="mx-auto my-8 max-w-xl">
         <button
           type="button"
           class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -100,8 +106,8 @@ function onDelete(id: string) {
   />
   <Dialog :open="dialogOpen" @close="baseLink.navigate">
     <EditForm
-      :submit-handler="() => {}"
-      @submitted="() => baseLink.navigate()"
+      :submitHandler="submitHandler"
+      @submitted="baseLink.navigate"
       @cancel="baseLink.navigate"
     />
   </Dialog>

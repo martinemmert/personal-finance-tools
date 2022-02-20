@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { Form, useForm } from "vee-validate";
-import { InferType, number, object, string } from "yup";
+import { Form, useIsSubmitting } from "vee-validate";
 import Button from "_components/atoms/button.vue";
 import FormHeader from "_components/atoms/form-header.vue";
 import Label from "_components/atoms/label.vue";
@@ -10,56 +9,28 @@ import HorizontalFieldset from "_components/layout/horizontal-fieldset.vue";
 import SelectField from "_components/vee-validate/select-field.vue";
 import TextInputErrorMessage from "_components/vee-validate/text-input-error-message.vue";
 import TextInputField from "_components/vee-validate/text-input-field.vue";
-
-const validationSchema = object({
-  service_name: string().required(),
-  subscription_plan: string(),
-  billing_period: string()
-    .required()
-    .matches(/weekly|monthly/),
-  price: number().required().min(0),
-});
-
-type FormValues = InferType<typeof validationSchema>;
+import { SubmitHandler, useEditForm } from "_modules/service-subscriptions/use-edit-form";
 
 type Props = {
-  submitHandler: (values: FormValues) => void | Promise<void>;
-  resetAfterSubmit?: boolean;
+  submitHandler: SubmitHandler;
 };
 
 type Emits = {
-  (e: "submit", values: FormValues): void;
-  (e: "submitted", values: FormValues): void;
-  (e: "reset"): void;
+  (e: "submit"): void;
+  (e: "submitted"): void;
+  (e: "resetted"): void;
   (e: "cancel"): void;
 };
 
-const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
+const props = defineProps<Props>();
 
-// TODO: put this into a useEditForm hook
-
-const { handleSubmit, handleReset, isSubmitting } = useForm<FormValues>({ validationSchema });
-const onSubmit = handleSubmit(async (values, actions) => {
-  emit("submit", values);
-  await props.submitHandler(values);
-  emit("submitted", values);
-  if (props.resetAfterSubmit) {
-    actions.resetForm();
-    emit("reset");
-  }
-});
-
-const deferredSubmitHandler = (event: Event) => {
-  event.preventDefault();
-  event.stopPropagation();
-  if (isSubmitting.value) return;
-  onSubmit(event);
-};
+const { handleSubmit, handleReset } = useEditForm(props.submitHandler, emit);
+const isSubmitting = useIsSubmitting();
 </script>
 
 <template>
-  <form class="form" @submit="deferredSubmitHandler" @reset="handleReset">
+  <form class="form" @submit="handleSubmit" @reset="handleReset">
     <FormHeader
       title="Add new service subscription"
       subtitle="Provide the details about an service you have subscribed to."
@@ -116,7 +87,9 @@ const deferredSubmitHandler = (event: Event) => {
       </template>
     </HorizontalFieldset>
     <FormActions>
-      <Button variant="simple" :disabled="isSubmitting" @click="emit('cancel')">Cancel</Button>
+      <Button type="reset" variant="simple" :disabled="isSubmitting" @click="emit('cancel')">
+        Cancel
+      </Button>
       <Button type="submit" variant="cta" :loading="isSubmitting">Save</Button>
     </FormActions>
   </form>

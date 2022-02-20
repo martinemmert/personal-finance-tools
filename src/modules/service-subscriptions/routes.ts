@@ -14,7 +14,7 @@ export function getRoutes(baseUrl: string = ""): RouteRecordRaw[] {
       component: Page,
     },
     {
-      path: `${baseUrl}/create/:id`,
+      path: `${baseUrl}/edit/:id`,
       name: "edit-subscription-service",
       component: Page,
     },
