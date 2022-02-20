@@ -6,20 +6,27 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "_generate-types": "npx openapi-typescript $VITE_SUPABASE_URL/rest/v1/?apikey=$VITE_SUPABASE_ANON_KEY --output @types/supabase.d.ts",
+    "generate-types": "npx dotenv-cli npm run _generate-types",
+    "prettier": "prettier --"
   },
   "dependencies": {
     "@headlessui/vue": "^1.4.2",
     "@heroicons/vue": "^1.0.5",
+    "@popperjs/core": "^2.11.2",
     "@supabase/supabase-js": "^1.29.0",
     "@tailwindcss/typography": "^0.5.0",
-    "@vuelidate/core": "^2.0.0-alpha.33",
+    "@vuelidate/core": "^2.0.0-alpha.34",
     "@vuelidate/validators": "^2.0.0-alpha.26",
     "@xstate/vue": "^0.8.1",
+    "pinia": "^2.0.9",
+    "vee-validate": "^4.5.8",
     "vue": "^3.2.25",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2",
-    "xstate": "^4.26.1"
+    "xstate": "^4.26.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
@@ -33,11 +40,19 @@
     "autoprefixer": "^10.4.0",
     "babel-loader": "^8.2.3",
     "daisyui": "^1.19.0",
+    "dotenv-cli": "^4.1.1",
+    "openapi-typescript": "^5.1.1",
     "postcss": "^8.4.5",
+    "postcss-atroot": "^0.2.3",
+    "postcss-import": "^14.0.2",
+    "prettier": "^2.5.1",
+    "prettier-plugin-tailwindcss": "^0.1.4",
     "storybook-builder-vite": "^0.1.12",
+    "storybook-vue3-router": "^2.2.1",
     "tailwindcss": "^3.0.7",
     "typescript": "^4.4.4",
     "vite": "^2.7.2",
+    "vite-tsconfig-paths": "^3.3.17",
     "vue-loader": "^16.8.3",
     "vue-tsc": "^0.29.8"
   }

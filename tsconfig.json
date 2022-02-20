@@ -9,9 +9,26 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "strictNullChecks": true,
     "lib": ["esnext", "dom"],
-    "types": ["vite/client"]
+    "types": ["vite/client", "vite"],
+    "baseUrl": ".",
+    "paths": {
+      "_@types/*": ["@types/*"],
+      "_components/*": ["src/components/*"],
+      "_hooks/*": ["src/hooks/*"],
+      "_layouts/*": ["src/views/_layouts/*"],
+      "_store/*": ["src/store/*"],
+      "_views/*": ["src/views/*"],
+      "_modules/*": ["src/modules/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["src/**/*.stories.ts"],
+  "include": [
+    "env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "@types/pinia.d.ts",
+    "@types/supabase.d.ts"
+  ]
 }

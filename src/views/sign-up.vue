@@ -1,8 +1,7 @@
 <script lang="ts">
-import { required, minLength, sameAs } from "@vuelidate/validators";
+import { minLength, required, sameAs } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { computed, defineComponent, reactive, ref } from "vue";
-import supabaseClient from "../api/supabase-client";
 import Spinner from "../components/form/spinner.vue";
 import Alert from "../components/alert.vue";
 import TextFieldInput from "../components/text-field-input.vue";
@@ -11,18 +10,18 @@ import TextFieldMessage from "../components/text-field-message.vue";
 
 export default defineComponent({
   setup() {
-    const isSubmitting = ref(false)
+    const isSubmitting = ref(false);
     const globalErrorMessage = ref("");
     const formData = reactive({
       email: "",
       password: "",
       verify_password: "",
-    })
+    });
 
     const rules = computed(() => ({
       email: { required },
       password: { required, minLength: minLength(6) },
-      verify_password: { required, sameAs: sameAs(formData.password, "Password") }
+      verify_password: { required, sameAs: sameAs(formData.password, "Password") },
     }));
 
     return {
@@ -35,7 +34,7 @@ export default defineComponent({
   data() {
     return {
       registerSuccess: false,
-    }
+    };
   },
   methods: {
     async submitForm() {
@@ -51,7 +50,7 @@ export default defineComponent({
       const error = await this.$store.dispatch("auth/signUp", {
         email: this.formData.email,
         password: this.formData.password,
-      })
+      });
 
       if (error) {
         this.globalErrorMessage = error.message;
@@ -61,15 +60,14 @@ export default defineComponent({
       }
 
       this.isSubmitting = false;
-    }
+    },
   },
-  components: { Spinner, Alert, TextFieldInput, TextFieldLabel, TextFieldMessage }
+  components: { Spinner, Alert, TextFieldInput, TextFieldLabel, TextFieldMessage },
 });
-
 </script>
 
 <template>
-  <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <img
         class="mx-auto h-12 w-auto"
@@ -82,7 +80,10 @@ export default defineComponent({
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
         <Alert v-if="registerSuccess" variant="success" message="Registration successful">
-          <span>Please confirm your account with the email we just sent to your given email address.</span>
+          <span
+            >Please confirm your account with the email we just sent to your given email
+            address.</span
+          >
         </Alert>
         <template v-if="!registerSuccess">
           <Alert v-if="globalErrorMessage" class="mb-6" :message="globalErrorMessage" />
@@ -144,7 +145,7 @@ export default defineComponent({
             <div>
               <button
                 type="submit"
-                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 :class="{ 'cursor-not-allowed': isSubmitting }"
                 :disabled="isSubmitting"
               >
@@ -158,14 +159,15 @@ export default defineComponent({
               <div class="w-full border-t border-gray-300" />
             </div>
             <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500">Already have an account?</span>
+              <span class="bg-white px-2 text-gray-500">Already have an account?</span>
             </div>
           </div>
           <div class="mt-6">
             <a
               href="/login"
-              class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-            >Sign In</a>
+              class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+              >Sign In</a
+            >
           </div>
         </template>
       </div>

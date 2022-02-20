@@ -2,7 +2,6 @@
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { defineComponent } from "vue";
-import supabaseClient from "../api/supabase-client";
 import Spinner from "../components/form/spinner.vue";
 import Alert from "../components/alert.vue";
 
