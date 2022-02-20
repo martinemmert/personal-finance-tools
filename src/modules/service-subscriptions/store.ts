@@ -45,7 +45,6 @@ export const useServiceSubscriptions = defineStore("serviceSubscriptions", {
     },
     async create(data: ServiceSubscriptionFormData) {
       const response = await fromServiceSubscriptions(this.supabase).insert(data).single();
-      console.log(response);
       if (response.error) throw response.error;
       if (response.data) this.items.push(response.data);
     },

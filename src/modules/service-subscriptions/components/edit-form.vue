@@ -9,7 +9,7 @@ import HorizontalFieldset from "_components/layout/horizontal-fieldset.vue";
 import SelectField from "_components/vee-validate/select-field.vue";
 import TextInputErrorMessage from "_components/vee-validate/text-input-error-message.vue";
 import TextInputField from "_components/vee-validate/text-input-field.vue";
-import { SubmitHandler, useEditForm } from "_modules/service-subscriptions/hooks/use-edit-form";
+import { useEditForm } from "_modules/service-subscriptions/hooks/use-edit-form";
 
 type Emits = {
   (e: "submit"): void;
@@ -75,7 +75,14 @@ const isSubmitting = useIsSubmitting();
       <template #label>
         <Label for="price">Service price</Label>
       </template>
-      <TextInputField id="price" name="price" placeholder="0,00" type="number" min="0" step="0.1" />
+      <TextInputField
+        id="price"
+        name="price"
+        placeholder="0,00"
+        type="number"
+        min="0"
+        step="0.01"
+      />
       <template #message>
         <TextInputErrorMessage name="price" />
       </template>

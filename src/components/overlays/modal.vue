@@ -3,9 +3,10 @@ import { Dialog, DialogTitle, TransitionChild, TransitionRoot } from "@headlessu
 import { CheckIcon } from "@heroicons/vue/outline";
 import Button from "_components/atoms/button.vue";
 import OverlayBackdrop from "_components/overlays/overlay-backdrop.vue";
+import { Ref } from "vue";
 
 type Props = {
-  open?: boolean;
+  open: Ref<boolean>;
   title?: string;
   text?: string;
   layout?: "simple" | "centered" | "centered-wide";
@@ -14,11 +15,12 @@ type Props = {
   iconVariant?: "info" | "warning" | "success" | "error";
   confirmButtonLabel?: string;
   confirmButtonVariant?: "simple" | "cta" | "positive" | "negative";
+  confirmButtonLoading?: boolean;
   cancelButtonLabel?: string;
   cancelButtonVariant?: "simple" | "cta" | "positive" | "negative";
 };
 
-withDefaults(defineProps<Props>(), {
+const { open } = withDefaults(defineProps<Props>(), {
   showIcon: true,
   layout: "simple",
   confirmButtonLabel: "Confirm",
@@ -85,6 +87,7 @@ function onCancel() {
                 <Button
                   v-if="confirmButtonLabel"
                   :variant="confirmButtonVariant"
+                  :loading="confirmButtonLoading"
                   @click="onConfirm"
                 >
                   {{ confirmButtonLabel }}
@@ -92,6 +95,7 @@ function onCancel() {
                 <Button
                   v-if="cancelButtonLabel"
                   :variant="cancelButtonVariant"
+                  :disabled="confirmButtonLoading"
                   @click="onCancel"
                 >
                   {{ cancelButtonLabel }}

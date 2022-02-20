@@ -25,10 +25,9 @@ export type ResetHandler = () => void;
 export type EventEmitter = {
   (e: "submit", values: FormValues, actions: FormActions): void;
   (e: "submitted", values: FormValues, actions: FormActions): void;
-  (e: "resetted"): void;
 };
 
-export function useEditForm(eventEmitter: EventEmitter, resetAfterSubmit: boolean = true) {
+export function useEditForm(eventEmitter: EventEmitter) {
   const initialValues = useInitialValues();
   const updateItem = useUpdateAction();
   const createItem = useCreateAction();
@@ -40,7 +39,6 @@ export function useEditForm(eventEmitter: EventEmitter, resetAfterSubmit: boolea
 
   async function _handleReset() {
     handleReset();
-    eventEmitter("resetted");
   }
 
   const _handleSubmit = handleSubmit(async (values, actions) => {
@@ -51,7 +49,6 @@ export function useEditForm(eventEmitter: EventEmitter, resetAfterSubmit: boolea
       await createItem(values);
     }
     eventEmitter("submitted", values, actions);
-    if (resetAfterSubmit) await _handleReset();
   });
 
   async function _deferredHandleSubmit(event: Event) {

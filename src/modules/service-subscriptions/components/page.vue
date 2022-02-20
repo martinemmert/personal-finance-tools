@@ -1,7 +1,7 @@
 <style lang="postcss"></style>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted } from "vue";
 import { useLink, useRoute, useRouter } from "vue-router";
 import Button from "_components/atoms/button.vue";
 import PageHeader from "_components/atoms/page-header.vue";
@@ -11,6 +11,7 @@ import TableView from "./table-view.vue";
 import Modal from "_components/overlays/modal.vue";
 import { useServiceSubscriptions } from "_modules/service-subscriptions/store";
 import { storeToRefs } from "pinia";
+import { useDeleteServiceSubscription } from "_modules/service-subscriptions/hooks/use-delete-service-subscription-dialog";
 
 const store = useServiceSubscriptions();
 const { items } = storeToRefs(store);
@@ -24,8 +25,6 @@ const currentRoute = useRoute();
 const baseLink = useLink({ to: "/" });
 const createLink = useLink({ to: "/create" });
 
-const deleteModalOpen = ref(false);
-
 const dialogOpen = computed(() => {
   return (
     currentRoute.name === "edit-subscription-service" ||
@@ -37,8 +36,10 @@ function onEdit(id: string) {
   router.push(`/edit/${id}`);
 }
 
+const deleteServiceSubscription = useDeleteServiceSubscription();
+
 function onDelete(id: string) {
-  deleteModalOpen.value = true;
+  deleteServiceSubscription.showDialog(id);
 }
 </script>
 
@@ -51,6 +52,7 @@ function onDelete(id: string) {
       <TableView v-if="items && items.length > 0" :data="items" @edit="onEdit" @delete="onDelete" />
       <div v-if="!items || items.length === 0" class="mx-auto my-8 max-w-xl">
         <button
+          @click="createLink.navigate"
           type="button"
           class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
@@ -77,15 +79,16 @@ function onDelete(id: string) {
     </div>
   </div>
   <Modal
-    :open="deleteModalOpen"
-    title="Do you really want to delete X?"
-    text="This action can't be reverted"
+    :open="deleteServiceSubscription.dialogOpen"
+    title="Delete service subscription?"
+    :text="`By clicking 'Yes' the service subscription entry of ${deleteServiceSubscription.serviceName.value} will be deleted.`"
     icon-variant="warning"
     confirm-button-label="YES"
     confirm-button-variant="negative"
+    :confirm-button-loading="deleteServiceSubscription.dialogLoading.value"
     cancel-button-label="NO"
-    @confirm="deleteModalOpen = false"
-    @cancel="deleteModalOpen = false"
+    @confirm="deleteServiceSubscription.confirmDialog"
+    @cancel="deleteServiceSubscription.cancelDialog"
   />
   <Dialog :open="dialogOpen" @close="baseLink.navigate">
     <EditForm @submitted="baseLink.navigate" @cancel="baseLink.navigate" />
