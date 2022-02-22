@@ -7,8 +7,8 @@ import { useInitialValues } from "_modules/service-subscriptions/hooks/use-initi
 import { useUpdateAction } from "_modules/service-subscriptions/hooks/use-update-action";
 import { useCreateAction } from "_modules/service-subscriptions/hooks/use-create-action";
 
-type FormValues = ServiceSubscriptionFormData;
-type FormActions = SubmissionContext<FormValues>;
+export type FormValues = ServiceSubscriptionFormData;
+export type FormContextActions = SubmissionContext<FormValues>;
 
 export type SubmitHandler = (
   values: FormValues,
@@ -23,8 +23,8 @@ export type SubmittedHandler = (
 export type ResetHandler = () => void;
 
 export type EventEmitter = {
-  (e: "submit", values: FormValues, actions: FormActions): void;
-  (e: "submitted", values: FormValues, actions: FormActions): void;
+  (e: "submit", values: FormValues, actions: FormContextActions): void;
+  (e: "submitted", values: FormValues, actions: FormContextActions): void;
 };
 
 export function useEditForm(eventEmitter: EventEmitter) {
