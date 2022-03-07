@@ -51,7 +51,7 @@ const customRoutes = [
         data: demoData,
       }),
       template: `
-              <Pag :data="data"/>`,
+              <Page :data="data"/>`,
     },
     children: [
       {
