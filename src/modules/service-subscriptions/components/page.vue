@@ -37,6 +37,14 @@ function onEdit(id: string) {
   router.push(`/edit/${id}`);
 }
 
+async function onFormSubmitted() {
+  await baseLink.navigate();
+}
+
+async function onFormCancelled() {
+  await baseLink.navigate();
+}
+
 const deleteServiceSubscription = useDeleteServiceSubscription();
 
 function onDelete(id: string) {
@@ -98,7 +106,7 @@ function onDelete(id: string) {
       @cancel="deleteServiceSubscription.cancelDialog"
     />
     <Dialog :open="dialogOpen" @close="baseLink.navigate">
-      <EditForm @submitted="baseLink.navigate" @cancel="baseLink.navigate" />
+      <EditForm @submitted="onFormSubmitted" @cancel="onFormCancelled" />
     </Dialog>
   </AppLayout>
 </template>

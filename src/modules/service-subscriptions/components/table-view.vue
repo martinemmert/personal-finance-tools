@@ -1,14 +1,7 @@
 <script setup lang="ts">
 import Table from "_components/atoms/table";
 import Button from "_components/atoms/button.vue";
-
-type ServiceSubscription = {
-  id: string;
-  service_name: string;
-  subscription_plan?: string;
-  billing_period: "weekly" | "monthly";
-  price: number;
-};
+import { ServiceSubscription } from "_modules/service-subscriptions/store";
 
 type Emits = {
   (e: "edit", id: string): void;
@@ -19,7 +12,7 @@ type Props = {
   data: ServiceSubscription[];
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const emit = defineEmits<Emits>();
 </script>
@@ -38,12 +31,12 @@ const emit = defineEmits<Emits>();
       </Table.tr>
     </Table.thead>
     <Table.tbody>
-      <Table.tr v-for="item in data" :key="item.id">
+      <Table.tr v-for="item in props.data" :key="item.id">
         <Table.td>{{ item.service_name }}</Table.td>
         <Table.td>{{ item.subscription_plan }}</Table.td>
         <Table.td>{{ item.billing_period }}</Table.td>
         <Table.td>{{ item.subscription_fee }}</Table.td>
-        <Table.td class="text-right space-x-2">
+        <Table.td class="space-x-2 text-right">
           <Button @click="emit('edit', item.id)" size="xs" rounded>Edit</Button>
           <Button @click="emit('delete', item.id)" size="xs" rounded>Delete</Button>
         </Table.td>
