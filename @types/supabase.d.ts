@@ -17,12 +17,14 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.service_subscriptions.id"];
+          user_id?: parameters["rowFilter.service_subscriptions.user_id"];
           created_at?: parameters["rowFilter.service_subscriptions.created_at"];
           updated_at?: parameters["rowFilter.service_subscriptions.updated_at"];
           service_name?: parameters["rowFilter.service_subscriptions.service_name"];
-          billing_period?: parameters["rowFilter.service_subscriptions.billing_period"];
-          price?: parameters["rowFilter.service_subscriptions.price"];
           subscription_plan?: parameters["rowFilter.service_subscriptions.subscription_plan"];
+          service_category?: parameters["rowFilter.service_subscriptions.service_category"];
+          billing_period?: parameters["rowFilter.service_subscriptions.billing_period"];
+          subscription_fee?: parameters["rowFilter.service_subscriptions.subscription_fee"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -74,12 +76,14 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.service_subscriptions.id"];
+          user_id?: parameters["rowFilter.service_subscriptions.user_id"];
           created_at?: parameters["rowFilter.service_subscriptions.created_at"];
           updated_at?: parameters["rowFilter.service_subscriptions.updated_at"];
           service_name?: parameters["rowFilter.service_subscriptions.service_name"];
-          billing_period?: parameters["rowFilter.service_subscriptions.billing_period"];
-          price?: parameters["rowFilter.service_subscriptions.price"];
           subscription_plan?: parameters["rowFilter.service_subscriptions.subscription_plan"];
+          service_category?: parameters["rowFilter.service_subscriptions.service_category"];
+          billing_period?: parameters["rowFilter.service_subscriptions.billing_period"];
+          subscription_fee?: parameters["rowFilter.service_subscriptions.subscription_fee"];
         };
         header: {
           /** Preference */
@@ -95,109 +99,18 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.service_subscriptions.id"];
+          user_id?: parameters["rowFilter.service_subscriptions.user_id"];
           created_at?: parameters["rowFilter.service_subscriptions.created_at"];
           updated_at?: parameters["rowFilter.service_subscriptions.updated_at"];
           service_name?: parameters["rowFilter.service_subscriptions.service_name"];
-          billing_period?: parameters["rowFilter.service_subscriptions.billing_period"];
-          price?: parameters["rowFilter.service_subscriptions.price"];
           subscription_plan?: parameters["rowFilter.service_subscriptions.subscription_plan"];
+          service_category?: parameters["rowFilter.service_subscriptions.service_category"];
+          billing_period?: parameters["rowFilter.service_subscriptions.billing_period"];
+          subscription_fee?: parameters["rowFilter.service_subscriptions.subscription_fee"];
         };
         body: {
           /** service_subscriptions */
           service_subscriptions?: definitions["service_subscriptions"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
-  "/service_subscriptions_categories": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.service_subscriptions_categories.id"];
-          created_at?: parameters["rowFilter.service_subscriptions_categories.created_at"];
-          name?: parameters["rowFilter.service_subscriptions_categories.name"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["service_subscriptions_categories"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** service_subscriptions_categories */
-          service_subscriptions_categories?: definitions["service_subscriptions_categories"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.service_subscriptions_categories.id"];
-          created_at?: parameters["rowFilter.service_subscriptions_categories.created_at"];
-          name?: parameters["rowFilter.service_subscriptions_categories.name"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.service_subscriptions_categories.id"];
-          created_at?: parameters["rowFilter.service_subscriptions_categories.created_at"];
-          name?: parameters["rowFilter.service_subscriptions_categories.name"];
-        };
-        body: {
-          /** service_subscriptions_categories */
-          service_subscriptions_categories?: definitions["service_subscriptions_categories"];
         };
         header: {
           /** Preference */
@@ -222,38 +135,30 @@ export interface definitions {
      */
     id: string;
     /**
-     * Format: timestamp with time zone
-     * @default now()
+     * Format: uuid
+     * @default auth.uid()
      */
-    created_at?: string;
+    user_id: string;
     /**
      * Format: timestamp with time zone
      * @default now()
      */
-    updated_at?: string;
+    created_at: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    updated_at: string;
     /** Format: character varying */
     service_name: string;
     /** Format: character varying */
+    subscription_plan?: string;
+    /** Format: character varying */
+    service_category?: string;
+    /** Format: character varying */
     billing_period: string;
     /** Format: double precision */
-    price: number;
-    /** Format: character varying */
-    subscription_plan?: string | null;
-  };
-  service_subscriptions_categories: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at?: string;
-    /** Format: character varying */
-    name: string;
+    subscription_fee: number;
   };
 }
 
@@ -294,6 +199,8 @@ export interface parameters {
   "body.service_subscriptions": definitions["service_subscriptions"];
   /** Format: uuid */
   "rowFilter.service_subscriptions.id": string;
+  /** Format: uuid */
+  "rowFilter.service_subscriptions.user_id": string;
   /** Format: timestamp with time zone */
   "rowFilter.service_subscriptions.created_at": string;
   /** Format: timestamp with time zone */
@@ -301,19 +208,13 @@ export interface parameters {
   /** Format: character varying */
   "rowFilter.service_subscriptions.service_name": string;
   /** Format: character varying */
+  "rowFilter.service_subscriptions.subscription_plan": string;
+  /** Format: character varying */
+  "rowFilter.service_subscriptions.service_category": string;
+  /** Format: character varying */
   "rowFilter.service_subscriptions.billing_period": string;
   /** Format: double precision */
-  "rowFilter.service_subscriptions.price": string;
-  /** Format: character varying */
-  "rowFilter.service_subscriptions.subscription_plan": string;
-  /** @description service_subscriptions_categories */
-  "body.service_subscriptions_categories": definitions["service_subscriptions_categories"];
-  /** Format: uuid */
-  "rowFilter.service_subscriptions_categories.id": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.service_subscriptions_categories.created_at": string;
-  /** Format: character varying */
-  "rowFilter.service_subscriptions_categories.name": string;
+  "rowFilter.service_subscriptions.subscription_fee": string;
 }
 
 export interface operations {}

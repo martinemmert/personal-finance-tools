@@ -77,18 +77,18 @@ const isSubmitting = useIsSubmitting();
     </HorizontalFieldset>
     <HorizontalFieldset>
       <template #label>
-        <Label for="price">Service price</Label>
+        <Label for="subscription_fee">Service price</Label>
       </template>
       <TextInputField
-        id="price"
-        name="price"
+        id="subscription_fee"
+        name="subscription_fee"
         placeholder="0,00"
         type="number"
         min="0"
         step="0.01"
       />
       <template #message>
-        <TextInputErrorMessage name="price" />
+        <TextInputErrorMessage name="subscription_fee" />
       </template>
     </HorizontalFieldset>
     <FormActions>

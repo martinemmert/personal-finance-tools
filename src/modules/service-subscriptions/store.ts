@@ -7,7 +7,7 @@ export type ServiceSubscription = definitions["service_subscriptions"];
 
 export type ServiceSubscriptionFormData = Pick<
   ServiceSubscription,
-  "service_name" | "subscription_plan" | "billing_period" | "price"
+  "service_name" | "subscription_plan" | "billing_period" | "subscription_fee"
 > & {
   id?: string;
 };
@@ -15,11 +15,11 @@ export type ServiceSubscriptionFormData = Pick<
 export const ServiceSubscriptionSchema: SchemaOf<ServiceSubscriptionFormData> = object({
   id: string(),
   service_name: string().required(),
-  subscription_plan: string().nullable(),
+  subscription_plan: string(),
   billing_period: string()
     .required()
     .matches(/weekly|monthly/),
-  price: number().required().min(0),
+  subscription_fee: number().required().min(0),
 });
 
 function fromServiceSubscriptions(client: SupabaseClient) {
