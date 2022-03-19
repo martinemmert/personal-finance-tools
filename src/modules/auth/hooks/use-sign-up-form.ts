@@ -39,7 +39,7 @@ export function useSignUpForm(eventEmitter: EventEmitter) {
         await store.supabase.auth.signIn({
             email: values.email
         }, {
-            redirectTo: "http://localhost:3000/refresh-session",
+            redirectTo: import.meta.env.VITE_MAGIC_LINK_TARGET_URL,
             shouldCreateUser: true,
             // data: {
             //     termsAccepted: values.terms,

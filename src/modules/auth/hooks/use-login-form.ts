@@ -36,8 +36,8 @@ export function useLoginForm(eventEmitter: EventEmitter) {
   const _handleSubmit = handleSubmit(async (values, actions) => {
     eventEmitter("submit", values, actions);
     await store.supabase.auth.signIn(values, {
-      redirectTo: "http://localhost:3000/refresh-session",
-      shouldCreateUser: false
+      redirectTo: import.meta.env.VITE_MAGIC_LINK_TARGET_URL,
+      shouldCreateUser: false,
     });
     eventEmitter("submitted", values, actions);
   });
