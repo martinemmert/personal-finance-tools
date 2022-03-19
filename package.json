@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --port 8080",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "_generate-types": "npx openapi-typescript $VITE_SUPABASE_URL/rest/v1/?apikey=$VITE_SUPABASE_ANON_KEY --output @types/supabase.d.ts",
