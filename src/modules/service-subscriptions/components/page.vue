@@ -94,7 +94,7 @@ function onDelete(id: string) {
       </div>
     </div>
     <Modal
-      :open="deleteServiceSubscription.dialogOpen"
+      :open="deleteServiceSubscription.dialogOpen.value"
       title="Delete service subscription?"
       :text="`By clicking 'Yes' the service subscription entry of ${deleteServiceSubscription.serviceName.value} will be deleted.`"
       icon-variant="warning"

@@ -3,10 +3,9 @@ import { Dialog, DialogTitle, TransitionChild, TransitionRoot } from "@headlessu
 import { CheckIcon } from "@heroicons/vue/outline";
 import Button from "_components/atoms/button.vue";
 import OverlayBackdrop from "_components/overlays/overlay-backdrop.vue";
-import { Ref } from "vue";
 
 type Props = {
-  open: Ref<boolean>;
+  open: boolean;
   title?: string;
   text?: string;
   layout?: "simple" | "centered" | "centered-wide";
@@ -20,7 +19,7 @@ type Props = {
   cancelButtonVariant?: "simple" | "cta" | "positive" | "negative";
 };
 
-const { open } = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   showIcon: true,
   layout: "simple",
   confirmButtonLabel: "Confirm",
