@@ -42,7 +42,7 @@ const emit = defineEmits<Emits>();
         <Table.td>{{ item.service_name }}</Table.td>
         <Table.td>{{ item.subscription_plan }}</Table.td>
         <Table.td>{{ item.billing_period }}</Table.td>
-        <Table.td>{{ item.price }}</Table.td>
+        <Table.td>{{ item.subscription_fee }}</Table.td>
         <Table.td class="text-right space-x-2">
           <Button @click="emit('edit', item.id)" size="xs" rounded>Edit</Button>
           <Button @click="emit('delete', item.id)" size="xs" rounded>Delete</Button>
